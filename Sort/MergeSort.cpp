@@ -69,8 +69,18 @@ void printArray(int arr[], int n) {
 }
 
 int main() {
+    int a[100];
+    int n;
+    cin>>n;
+    for (int i=1;i<=n;i++){
+        cin>>a[i];
+    }
+    mergeSort(a,n);
+    for (int i=1;i<=n;i++){
+        cout<<a[i]<<" ";
+    };
     int arr[] = {12, 11, 13, 5, 6, 7};
-    int n = sizeof(arr)/sizeof(arr[0]);
+    int nn = sizeof(arr)/sizeof(arr[0]);
 
     cout << "原始数组：" << endl;
     printArray(arr, n);

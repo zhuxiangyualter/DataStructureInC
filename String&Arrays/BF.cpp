@@ -7,6 +7,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 //BF算法
+//从零开始计数的  所以和实验报告上的不一样
 string name = "渚相玉";
 int BF(string s,string t){
     int i = 0,j = 0;

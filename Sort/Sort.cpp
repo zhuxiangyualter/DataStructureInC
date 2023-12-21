@@ -180,8 +180,8 @@ int main(){
     for (int i=1;i<=n;i++){
         cin>>a[i];
     }
-//    InsertSort(a,n);
-    ShellSort(a,n);
+    InsertSort(a,n);
+//    ShellSort(a,n);
     //BubbleSort(a,n);
     //QSort(a,1,n);
     //SelectSort(a,n);

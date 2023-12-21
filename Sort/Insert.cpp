@@ -1,9 +1,3 @@
-/**
-*@author    渚相玉
-*@version   v0.9.16
-*@Session For U
-*Created by 15708 on 2023-12-19.
-*/
 #include<bits/stdc++.h>
 using namespace std;
 void InsertSort(int a[],int n){
@@ -19,8 +13,10 @@ void InsertSort(int a[],int n){
 }
 int main() {
     int a[10]={0,1,2,3,4,5,6,7,8,9};
-    InsertSort(a,10);
-    for (int i = 0; i < 10; ++i) {
+    int arr[] = {5, 3, 8, 4, 2};
+
+    InsertSort(arr,5);
+    for (int i = 0; i < 5; ++i) {
         cout<<a[i]<<" ";
     }
     return 0;

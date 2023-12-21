@@ -1,9 +1,3 @@
-/**
-*@author    渚相玉
-*@version   v0.9.16
-*@Session For U
-*Created by 15708 on 2023-12-19.
-*/
 #include<bits/stdc++.h>
 using namespace std;
 //堆排序
@@ -33,6 +27,15 @@ void HeapSort(int a[],int n){
     }
 }
 int main() {
-    cout << "hellp" << endl;
+    int a[100];
+    int n;
+    cin>>n;
+    for (int i=1;i<=n;i++){
+        cin>>a[i];
+    }
+    HeapSort(a,n);
+    for (int i=1;i<=n;i++){
+        cout<<a[i]<<" ";
+    };
     return 0;
 }

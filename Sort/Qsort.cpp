@@ -28,11 +28,13 @@ void QSort(int a[],int low,int high){
     }
 }
 int main() {
-    int a[10]={0,1,2,3,4,5,6,7,8,9};
-    Partition(a,0,9);
-    for (int i = 0; i < 10; ++i) {
-        cout<<a[i]<<" ";
-    }
+    int arr[] = {9, 7, 5, 11, 12, 2, 14, 3, 10, 6};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    QSort(arr, 0, n - 1);
 
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
     return 0;
 }
