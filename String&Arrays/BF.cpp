@@ -7,6 +7,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 //BF算法
+string name = "渚相玉";
 int BF(string s,string t){
     int i = 0,j = 0;
     while (i<s.length()&&j<t.length()){
@@ -23,7 +24,12 @@ int BF(string s,string t){
 }
 int main() {
     string s,t;
-    cin>>s>>t;
+    cout<<"请输入主串："<<endl;
+    cin>>s;
+    cout<<"请输入子串："<<endl;
+    cin>>t;
+    cout<<"子串在主串中的位置为：";
     cout<<BF(s,t);
+    cout<<name;
     return 0;
 }

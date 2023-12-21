@@ -1,49 +1,55 @@
 #include <iostream>
 #include <vector>
-#include <cstdlib>
-#include <ctime>
-
+#include<bits/stdc++.h>
 using namespace std;
 
 // 生成nxn阶三对角矩阵
-vector<vector<int>> generateTridiagonalMatrix(int n) {
-    vector<vector<int>> matrix(n, vector<int>(n));
-    srand(time(0));
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (abs(i - j) <= 1) {
-                matrix[i][j] = rand() % 10;
-            } else {
-                matrix[i][j] = 0;
-            }
+vector<double> generateTridiagonalMatrix(int n) {
+    vector<double> matrix(n * (n + 1) / 2, 0);
+    int index = 0;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j <= i; ++j) {
+            matrix[index] = rand() % 100; // 随机生成0-99之间的数
+            index++;
         }
     }
     return matrix;
 }
 
-// 按行优先压缩存储三对角矩阵
-vector<int> compressTridiagonalMatrix(const vector<vector<int>>& matrix) {
-    vector<int> compressedMatrix;
-    for (int i = 0; i < matrix.size(); i++) {
-        for (int j = 0; j < matrix[i].size(); j++) {
-            if (abs(i - j) <= 1) {
-                compressedMatrix.push_back(matrix[i][j]);
-            }
-        }
+// 根据行列下标在一维数组中存取元素
+double getElement(const vector<double>& matrix, int row, int col) {
+    int n = static_cast<int>(sqrt(matrix.size()));
+    if (row < 0 || row >= n || col < 0 || col >= n) {
+        throw out_of_range("行列下标越界");
     }
-    return compressedMatrix;
+    int index = row * (n + 1) - row * (row + 1) / 2 + col - row;
+    return matrix[index];
+}
+// 遍历并输出矩阵中的所有元素
+void printMatrix(const vector<double>& matrix) {
+    int n = static_cast<int>(sqrt(matrix.size()));
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j <= i; ++j) {
+            cout << getElement(matrix, i, j) << " ";
+        }
+        cout << endl;
+    }
 }
 
 int main() {
-    int n;
-    cout << "请输入矩阵的阶数： ";
-    cin >> n;
-    vector<vector<int>> matrix = generateTridiagonalMatrix(n);
-    vector<int> compressedMatrix = compressTridiagonalMatrix(matrix);
-    cout << "压缩后的三对角矩阵为： ";
-    for (int i = 0; i < compressedMatrix.size(); i++) {
-        cout << compressedMatrix[i] << " ";
+    int n = 4;
+    vector<double> matrix = generateTridiagonalMatrix(n);
+
+    cout << "三对角矩阵：" << endl;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j <= i; ++j) {
+            cout << getElement(matrix, i, j) << " ";
+        }
+        cout << endl;
     }
-    cout << endl;
+    printMatrix(matrix);
+    cout << "元素(1, 1): " << getElement(matrix, 1, 1) << endl;
+    cout << "元素(2, 0): " << getElement(matrix, 2, 0) << endl;
+
     return 0;
 }

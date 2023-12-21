@@ -32,11 +32,21 @@ vector<int> compressLowerTriangularMatrix(const vector<vector<int>>& matrix) {
 int getElement(const vector<int>& compressedMatrix, int row, int col) {
     return compressedMatrix[row * (row + 1) / 2 + col - row - 1];
 }
+// 遍历并输出矩阵中的所有元素
+void printMatrix(const vector<vector<int>>& matrix) {
+    for (int i = 0; i < matrix.size(); i++) {
+        for (int j = 0; j < matrix[i].size(); j++) {
+            cout << matrix[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
 
 int main() {
     int n = 5;
     vector<vector<int>> lowerTriangularMatrix = generateLowerTriangularMatrix(n);
     vector<int> compressedMatrix = compressLowerTriangularMatrix(lowerTriangularMatrix);
+    printMatrix(lowerTriangularMatrix);
     cout << "Element at (2, 3): " << getElement(compressedMatrix, 2, 3) << endl;
     return 0;
 }

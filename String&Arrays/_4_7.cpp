@@ -1,44 +1,63 @@
-#include <iostream>
-#include <vector>
-#include <cstdlib>
-#include <ctime>
-#include <tuple>
-
+#include<bits/stdc++.h>
 using namespace std;
-
-// 输入nxm阶的稀疏矩阵A，将稀疏矩阵按行优先压缩存储到三元组顺序表中
-void compressSparseMatrix(const vector<vector<int>>& A, vector<tuple<int, int, int>>& tripletList) {
-    for (int i = 0; i < A.size(); i++) {
-        for (int j = 0; j < A[i].size(); j++) {
-            if (A[i][j] != 0) {
-                tripletList.push_back(make_tuple(i, j, A[i][j]));
-            }
-        }
+struct Triplet {
+    int row;
+    int col;
+    double value;
+};
+void transpose(const vector<Triplet>& A, vector<Triplet>& B) {
+    for (const auto& triplet : A) {
+        B.push_back({triplet.col, triplet.row, triplet.value});
     }
 }
+void fastTranspose(const vector<Triplet>& A, vector<double>& values, vector<int>& colIndices, vector<int>& rowPointers) {
+    int n = *max_element(A.begin(), A.end(), [](const Triplet& a, const Triplet& b) { return a.row < b.row; })->row + 1;
+    rowPointers.resize(n + 1);
+    colIndices.clear();
+    values.clear();
 
-// 输出三元组顺序表
-void printTripletList(const vector<tuple<int, int, int>>& tripletList) {
-    cout << "三元组顺序表为： ";
-    for (const auto& t : tripletList) {
-        cout << "(" << get<0>(t) << ", " << get<1>(t) << ", " << get<2>(t) << ") ";
+    for (const auto& triplet : A) {
+        colIndices.push_back(triplet.col);
+        values.push_back(triplet.value);
     }
-    cout << endl;
-}
 
+    partial_sum(rowPointers.begin(), rowPointers.end(), rowPointers.begin() + 1);
+}
+void printTriplets(const vector<Triplet>& triplets) {
+    for (const auto& triplet : triplets) {
+        cout << "(" << triplet.row << ", " << triplet.col << ", " << triplet.value << ")" << endl;
+    }
+}
 int main() {
+    // 输入nxm阶的稀疏矩阵A
+    // ...
     int n, m;
-    cout << "请输入矩阵的阶数和列数： ";
+    cout << "请输入矩阵的行数和列数：";
     cin >> n >> m;
-    vector<vector<int>> A(n, vector<int>(m));
-    srand(time(0));
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            A[i][j] = rand() % 10;
-        }
+
+    // 将稀疏矩阵按行优先压缩存储到三元组顺序表中
+    vector<Triplet> A;
+    // ...
+    cout << "请输入矩阵的元素（每行一个三元组，格式为：行号 列号 值）：" << endl;
+    for (int i = 0; i < n * m; ++i) {
+        int row, col;
+        double value;
+        cin >> row >> col >> value;
+        A.push_back({row, col, value});
     }
-    vector<tuple<int, int, int>> tripletList;
-    compressSparseMatrix(A, tripletList);
-    printTripletList(tripletList);
+    // 使用普通转置算法求矩阵A的转置矩阵B
+    vector<Triplet> B;
+    transpose(A, B);
+    printTriplets(B);
+
+    // 使用快速转置算法求矩阵A的转置矩阵B
+    vector<double> values;
+    vector<int> colIndices;
+    vector<int> rowPointers;
+    fastTranspose(A, values, colIndices, rowPointers);
+    printTriplets(colIndices);
+    printTriplets(values);
+    printTriplets(rowPointers);
+
     return 0;
 }

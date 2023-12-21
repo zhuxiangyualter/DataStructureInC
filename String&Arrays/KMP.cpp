@@ -6,6 +6,7 @@
 */
 #include<bits/stdc++.h>
 using namespace std;
+string name = "渚相玉";
 //KMP算法
 void GetNext(string t,int next[]){
     int i = 0,j = -1;
@@ -33,7 +34,12 @@ int KMP(string s,string t){
 }
 int main() {
     string s,t;
-    cin>>s>>t;
+    cout<<"请输入主串："<<endl;
+    cin>>s;
+    cout<<"请输入子串："<<endl;
+    cin>>t;
+    cout<<"子串在主串中的位置为：";
     cout<<KMP(s,t);
+    cout<<name;
     return 0;
 }

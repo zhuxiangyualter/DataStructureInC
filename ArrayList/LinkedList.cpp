@@ -50,7 +50,6 @@ public:
         head = nullptr;
         sizes = 0;
     }
-
     // 求单链表的表长
     int size() const {
         return sizes;
@@ -81,7 +80,34 @@ public:
         }
         return -1;
     }
-
+    //排序算法
+    void sort() {
+        ListNode<T>* p = head;
+        ListNode<T>* q = nullptr;
+        while (p != nullptr) {
+            q = p->next;
+            while (q != nullptr) {
+                if (p->data > q->data) {
+                    T temp = p->data;
+                    p->data = q->data;
+                    q->data = temp;
+                }
+                q = q->next;
+            }
+            p = p->next;
+        }
+    }
+    //判断是否有序
+    bool isSorted() {
+        ListNode<T>* p = head;
+        while (p->next != nullptr) {
+            if (p->data > p->next->data) {
+                return false;
+            }
+            p = p->next;
+        }
+        return true;
+    }
     // 插入元素
     bool insert(int pos, const T& val) {
         if (pos < 0 || pos > sizes) {
@@ -281,6 +307,7 @@ public:
 
 };
 
+
 int main() {
     // 创建空的单链表
     LinkList<int> lst1;
@@ -292,7 +319,8 @@ int main() {
     // 插入元素
     lst2.insert(2, 4);
     lst2.insert(4, 6);
-
+    lst1.merge(lst2);
+    
     // 输出单链表长度和所有元素
     cout << "List Length: " << lst2.size() << endl;
     lst2.traverse();
