@@ -24,7 +24,11 @@ void floyd()
 
 int main()
 {
-    cin>>n>>m;
+    //给定数值  不要输入
+    int n = 5;
+    int m = 7;
+
+
 
     for(int i=1;i<=n;i++)
     {
@@ -33,16 +37,26 @@ int main()
             mp[i][j]=inf;//初始值全赋值为最大
         }
     }
+//改为自动给值  不要我手动输入
+int x[] = {1,1,2,2,3,4,4};
+int y[] = {2,3,3,4,5,5,3};
+int d[] = {2,3,4,1,1,1,1};
+for(int i=0;i<m;i++)
+{
+    mp[x[i]][y[i]] = d[i];
+    mp[y[i]][x[i]] = d[i];
+}
 
-    for(int i=1;i<=m;i++)
-    {
-        int x;
-        int y;
-        int d;
-        scanf("%d %d %d",&x,&y,&d);
-        mp[x][y]=d;
-        mp[y][x]=d;//由题意得是无向图，给图赋值
-    }
+
+//    for(int i=1;i<=m;i++)
+//    {
+//        int x;
+//        int y;
+//        int d;
+//        scanf("%d %d %d",&x,&y,&d);
+//        mp[x][y]=d;
+//        mp[y][x]=d;//由题意得是无向图，给图赋值
+//    }
 
     floyd();//计算任意两点最短路径
     memset(dis,0,sizeof(dis));

@@ -15,12 +15,18 @@ struct BiTNode{
 };
 template <typename T>
 class BiTree{
-private:
-    BiTNode<T> *root;
 public:
     BiTree(){
         root = nullptr;
     };
+    //构造函数
+    BiTree(T data){
+        root = new BiTNode<T>;
+        root->data = data;
+        root->lchild = nullptr;
+        root->rchild = nullptr;
+    };
+
     //求二叉树第k层的结点个数
     int GetNodeNumByLevel(BiTNode<T> *bt, int k){
         if (bt == nullptr || k < 1){
@@ -48,45 +54,29 @@ public:
         int numLeft = GetLeafNodeNum(bt->lchild, k - 1);
         int numRight = GetLeafNodeNum(bt->rchild, k - 1);
         return numLeft + numRight;
-    }
     };
-    void CreateBiTreeByPreAndIn(BiTNode<T> *&bt, T *pre, T *in, int n){
-        if (n <= 0){
-            bt = nullptr;
-            return;
-        }
-        int k = 0;
-        while (pre[0] != in[k]){
-            k++;
-        }
-        bt = new BiTNode<T>;
-        bt->data = pre[0];
-        CreateBiTreeByPreAndIn(bt->lchild, pre + 1, in, k);
-        CreateBiTreeByPreAndIn(bt->rchild, pre + k + 1, in + k + 1, n - k - 1);
-    };
-    void CreateBiTreeByPreAndIn(T *pre, T *in, int n){
-        CreateBiTreeByPreAndIn(root, pre, in, n);
-    };
-    void PreOrder(BiTNode<T> *bt){
-        if (bt){
-            cout<<bt->data<<" ";
-            PreOrder(bt->lchild);
-            PreOrder(bt->r
+
+    BiTNode<T> *root;
 };
+//求二叉树第k层的结点个数和叶子结点个数
 int main() {
-    BiTree<char> tree;
-    int n;
-    cin>>n;
-    char pre[n],in[n];
-    for (int i=0;i<n;i++){
-        cin>>pre[i];
-    }
-    for (int i=0;i<n;i++){
-        cin>>in[i];
-    }
-    tree.CreateBiTreeByPreAndIn(pre,in,n);
-    cout<<tree.GetNodeNumByLevel(tree.root,3)<<endl;
-    cout<<tree.GetLeafNodeNum(tree.root,3)<<endl;
+    BiTree<int> biTree(1);
+    biTree.root->lchild = new BiTNode<int>;
+    biTree.root->rchild = new BiTNode<int>;
+    biTree.root->lchild->data = 2;
+    biTree.root->rchild->data = 3;
+    biTree.root->lchild->lchild = new BiTNode<int>;
+    biTree.root->lchild->rchild = new BiTNode<int>;
+    biTree.root->lchild->lchild->data = 4;
+    biTree.root->lchild->rchild->data = 5;
+    biTree.root->rchild->lchild = new BiTNode<int>;
+    biTree.root->rchild->rchild = new BiTNode<int>;
+    biTree.root->rchild->lchild->data = 6;
+    biTree.root->rchild->rchild->data = 7;
+    cout << "第2层结点个数：" << biTree.GetNodeNumByLevel(biTree.root, 2) << endl;
+
+    cout << "第2层叶子结点个数：" << biTree.GetLeafNodeNum(biTree.root, 2) << endl;
+    cout<<"王观祥"<<endl;
 
     return 0;
 }

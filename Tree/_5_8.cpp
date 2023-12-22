@@ -1,91 +1,107 @@
-#include <iostream>
+#include <bits/stdc++.h>
+
 using namespace std;
+template <typename DataType>
+class InThrBiTree;
 
-// 定义一个模板结构体，表示中序线索二叉树的节点
-template <typename T>
-struct InThrBiTree {
-    T data; // 节点数据
-    InThrBiTree *lchild, *rchild, *parent; // 左右子节点和父节点指针
-    bool lthread, rthread; // 左右子节点是否为线索
-};
+template <typename DataType>
+class BiThrNode {
+    friend class InThrBiTree<DataType>;
 
-// 定义一个模板类，用于中序遍历中序线索二叉树
-template <typename T>
-class InThrBiTreeTraversal {
 public:
-    // 中序遍历函数，参数为根节点指针
-    static void inorder(InThrBiTree<T> *root) {
-        if (root == nullptr || (!root->lthread && !root->rthread)) { // 如果节点为空或者左右子节点都不是线索，直接返回
-            return;
+    BiThrNode(DataType value = 0) : data(value), lchild(nullptr), rchild(nullptr), LTag(Link), RTag(Link) {}
+    DataType data;
+    BiThrNode<DataType>* lchild;
+    BiThrNode<DataType>* rchild;
+    PointerTag LTag;
+    PointerTag RTag;
+};
+
+template <typename DataType>
+class InThrBiTree {
+public:
+    InThrBiTree() : root(nullptr), pre(nullptr) {}
+
+    // 构造未线索化的中序线索二叉链表
+    void CreateInThrBiTree(BiThrNode<DataType>*& node) {
+        DataType ch;
+        std::cin >> ch;
+        if (ch == '#') {
+            node = nullptr;
+        } else {
+            node = new BiThrNode<DataType>(ch);
+            CreateInThrBiTree(node->lchild);
+            if (pre != nullptr) {
+                pre->rchild = node;
+                pre->RTag = Thread;
+            }
+            pre = node;
+            CreateInThrBiTree(node->rchild);
         }
-        if (root->lthread) { // 如果左子节点是线索，递归遍历左子树
-            inorder(root->lchild);
+    }
+
+    // 构造中序线索二叉树
+    void InOrderThreading() {
+        root = new BiThrNode<DataType>();
+        pre = root;
+        if (root != nullptr) {
+            InThreading(root);
+            pre->rchild = root;
+            pre->RTag = Thread;
+            root->rchild = pre;
         }
-        cout << root->data << " "; // 输出当前节点数据
-        if (root->rthread) { // 如果右子节点是线索，递归遍历右子树
-            inorder(root->rchild);
+    }
+
+    // 输出中序线索二叉树的中序遍历序列
+    void InOrderTraverse() const {
+        BiThrNode<DataType>* p = root->lchild;
+        while (p != root) {
+            while (p->LTag == Link) {
+                p = p->lchild;
+            }
+            std::cout << p->data << " ";
+            while (p->RTag == Thread && p->rchild != root) {
+                p = p->rchild;
+                std::cout << p->data << " ";
+            }
+            p = p->rchild;
+        }
+        std::cout << std::endl;
+    }
+
+private:
+    BiThrNode<DataType>* root;
+    BiThrNode<DataType>* pre;
+
+    // 中序遍历线索化
+    void InThreading(BiThrNode<DataType>* node) {
+        if (node != nullptr) {
+            InThreading(node->lchild);
+
+            if (node->lchild == nullptr) {
+                node->LTag = Thread;
+                node->lchild = pre;
+            }
+
+            if (pre->rchild == nullptr) {
+                pre->RTag = Thread;
+                pre->rchild = node;
+            }
+
+            pre = node;
+            InThreading(node->rchild);
         }
     }
 };
-
-// 定义一个模板函数，用于创建中序线索二叉树
-template <typename T>
-InThrBiTree<T> *createThreadedList(InThrBiTree<T> *root) {
-    if (root == nullptr) { // 如果根节点为空，直接返回
-        return nullptr;
-    }
-    if (root->lthread) { // 如果左子节点是线索，递归创建左子树的线索链表
-        createThreadedList(root->lchild);
-    } else { // 如果左子节点不是线索，找到左子树的最右节点，将其右子节点设置为当前节点的右子节点，并将当前节点插入到最右节点的右子节点中
-        InThrBiTree<T> *pre = root;
-        while (!pre->lthread) {
-            pre = pre->parent;
-        }
-        if (pre->lchild != nullptr) {
-            pre->lchild->rthread = false;
-            pre->lchild->rchild = root->rchild;
-            if (root->rchild != nullptr) {
-                root->rchild->parent = pre->lchild;
-            }
-            root->parent = pre;
-            root->lchild = pre->lchild;
-            pre->lchild = root;
-        }
-    }
-    if (root->rthread) { // 如果右子节点是线索，递归创建右子树的线索链表
-        createThreadedList(root->rchild);
-    } else { // 如果右子节点不是线索，找到右子树的最左节点，将其左子节点设置为当前节点的左子节点，并将当前节点插入到最左节点的左子节点中
-        InThrBiTree<T> *post = root;
-        while (!post->rthread) {
-            post = post->parent;
-        }
-        if (post->rchild != nullptr) {
-            post->rchild->lthread = false;
-            post->rchild->lchild = root->lchild;
-            if (root->lchild != nullptr) {
-                root->lchild->parent = post->rchild;
-            }
-            root->parent = post;
-            root->rchild = post->rchild;
-            post->rchild = root;
-        }
-    }
-    return root; // 返回创建好的线索链表的根节点指针
-}
 
 int main() {
-    // 创建中序线索二叉树的示例代码，具体数据需要根据实际情况填写
-    InThrBiTree<int> *root = new InThrBiTree<int>{10, nullptr, nullptr, nullptr, false, false};
-    root->lchild = new InThrBiTree<int>{5, nullptr, nullptr, nullptr, false, false};
-    root->rchild = new InThrBiTree<int>{15, nullptr, nullptr, nullptr, false, false};
-    root->lchild->parent = root;
-    root->rchild->parent = root;
-    root->lthread = true;
-    root->rthread = true;
+    InThrBiTree<char> tree;
+    std::cout << "请输入二叉树的前序遍历序列（#表示空节点）：" << std::endl;
+    tree.CreateInThrBiTree(tree.root);
+    tree.InOrderThreading();
 
-    InThrBiTree<int> *threadedListRoot = createThreadedList(root); // 创建线索链表
-    InThrBiTreeTraversal<int>::inorder(threadedListRoot); // 中序遍历线索链表并输出结果
-    cout << endl;
+    std::cout << "中序遍历序列：" << std::endl;
+    tree.InOrderTraverse();
 
     return 0;
 }

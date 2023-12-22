@@ -16,7 +16,7 @@ template <typename T>
 class BiTree {
 public:
 
-    // µİ¹éÇ°Ğò±éÀú
+    // é€’å½’å‰åºéå†
     void preOrderTraversal(BiTreeNode<T>* node) {
         if (node) {
             cout << node->data << " ";
@@ -25,7 +25,7 @@ public:
         }
     }
 
-    // µİ¹éÖĞĞò±éÀú
+    // é€’å½’ä¸­åºéå†
     void inOrderTraversal(BiTreeNode<T>* node) {
         if (node) {
             inOrderTraversal(node->left);
@@ -34,7 +34,7 @@ public:
         }
     }
 
-    // µİ¹éºóĞò±éÀú
+    // é€’å½’ååºéå†
     void postOrderTraversal(BiTreeNode<T>* node) {
         if (node) {
             postOrderTraversal(node->left);
@@ -45,12 +45,12 @@ public:
 
     BiTree() : root(nullptr) {}
 
-    // ¹¹Ôìº¯Êı
+    // æ„é€ å‡½æ•°
     BiTree(T rootValue) {
         root = new BiTreeNode<T>(rootValue);
     }
 
-    // ²ãĞò±éÀú
+    // å±‚åºéå†
     void levelOrderTraversal() {
         if (!root)
             return;
@@ -77,32 +77,30 @@ public:
 
 int main() {
     char a,b,c,d;
-    cout<<"ÇëÊäÈë¶ş²æÊ÷µÄÏÈĞò±éÀúĞòÁĞ£¬ÆäÖĞ¿Õ½ÚµãÓÃ'#'±íÊ¾£º"<<endl;
+    cout<<"è¯·è¾“å…¥äºŒå‰æ ‘çš„å…ˆåºéå†åºåˆ—ï¼Œå…¶ä¸­ç©ºèŠ‚ç‚¹ç”¨'#'è¡¨ç¤ºï¼š"<<endl;
     cin>>a>>b>>c>>d;
-    // ´´½¨¶ş²æÊ÷
+    // åˆ›å»ºäºŒå‰æ ‘
     BiTree<char> tree(a);
     tree.root->left = new BiTreeNode<char>(b);
     tree.root->right = new BiTreeNode<char>(c);
     tree.root->right->left = new BiTreeNode<char>(d);
 
-    // ÑéÖ¤±éÀú²Ù×÷
-    cout << "ÏÈĞò±éÀú: ";
+    // éªŒè¯éå†æ“ä½œ
+    cout << "å…ˆåºéå†: ";
     tree.preOrderTraversal(tree.root);
     cout << endl;
 
-    cout << "ÖĞĞò±éÀú: ";
+    cout << "ä¸­åºéå†: ";
     tree.inOrderTraversal(tree.root);
     cout << endl;
 
-    cout << "ºóĞò±éÀú: ";
+    cout << "ååºéå†: ";
     tree.postOrderTraversal(tree.root);
     cout << endl;
 
-    cout << "²ãĞò±éÀú: ";
+    cout << "å±‚åºéå†: ";
     tree.levelOrderTraversal();
     cout << endl;
-    cout<<"Íõ¹ÛÏé" <<endl;
 
     return 0;
 }
-
